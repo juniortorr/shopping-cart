@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/App.module.scss';
 import Nav from './Nav';
 import Card from './Card';
@@ -8,7 +8,7 @@ import storedData from '../data';
 
 function App() {
   const [apiData, setApiData] = useState(null);
-  const [shoppingCart, setShoppingCart] = useState({ items: [], total: 0 });
+  const [shoppingCart, setShoppingCart] = useState(storedData.cart);
   const [displayAddedNoti, setDisplayAddedNoti] = useState(false);
 
   useEffect(() => {

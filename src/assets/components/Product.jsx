@@ -27,9 +27,43 @@ function Product() {
   }
 
   function handleAddToCart() {
-    const items = new Array(quantity).fill(item);
+    let isDuplicate = false;
+    let newList;
+    item.quantity = quantity;
+    shoppingCart.items.map((product) => {
+      if (product.id === item.id) {
+        isDuplicate = true;
+        const removeOriginalProduct = shoppingCart.items.filter((piece) => piece.id !== product.id);
+        console.log(removeOriginalProduct);
+        const updatedProduct = product;
+        updatedProduct.quantity = product.quantity + quantity;
+        if (removeOriginalProduct.length === 0) {
+          newList = [updatedProduct];
+        } else {
+          newList = [...removeOriginalProduct, updatedProduct];
+        }
+        storedData.setCart({
+          items: [...newList],
+          total: Number((shoppingCart.total + item.price * quantity).toFixed(2)),
+        });
+        setShoppingCart(() => {
+          return { ...storedData.cart };
+        });
+      }
+      if (isDuplicate === false) {
+        console.log('hello');
+        storedData.setCart({
+          items: [...shoppingCart.items, item],
+          total: Number((shoppingCart.total + item.price * quantity).toFixed(2)),
+        });
+        console.log(storedData.cart);
+        setShoppingCart(() => {
+          return { ...storedData.cart };
+        });
+      }
+    });
     setShoppingCart({
-      items: [...shoppingCart.items, ...items],
+      items: [...shoppingCart.items, item],
       total: shoppingCart.total + item.price * quantity,
     });
     navigate('/');
