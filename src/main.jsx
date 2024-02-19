@@ -9,12 +9,16 @@ import {
   createRoutesFromElements,
   Route,
 } from 'react-router-dom';
+import ShoppingCart from './assets/components/Shopping-Cart.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="product/:productId" element={<Product />} loader={productLoader}></Route>
-    </Route>
+    <>
+      <Route path="/" element={<App />}>
+        <Route path="product/:productId" element={<Product />} loader={productLoader}></Route>
+      </Route>
+      <Route path="/cart" element={<ShoppingCart />}></Route>
+    </>
   )
 );
 
