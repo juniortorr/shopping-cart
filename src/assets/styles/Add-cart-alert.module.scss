@@ -1,0 +1,18 @@
+.alert {
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: rgba(240, 248, 255, 0.675);
+  position: absolute;
+  top: 200px;
+  border-radius: 15px;
+}
+
+.escape {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
