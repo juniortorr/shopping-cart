@@ -1,14 +1,24 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-function Card({ styles, item, shoppingCart, setShoppingCart, allProducts }) {
-  const [quantity, setQuantity] = useState(1);
+function Card({ styles, item, shoppingCart, setShoppingCart, allProducts, setDisplayAddedNoti }) {
+  const [cardInfo, setCardInfo] = useState({
+    item: { ...item },
+    quantity: 1,
+  });
 
   function handleQuantityClick(e) {
     if (e.target.textContent === '+') {
-      setQuantity(() => quantity + 1);
+      setCardInfo({
+        ...item,
+        quantity: cardInfo.quantity + 1,
+      });
     } else {
-      if (quantity >= 2) {
-        setQuantity(() => quantity - 1);
+      if (cardInfo.quantity >= 2) {
+        setCardInfo({
+          ...item,
+          quantity: cardInfo.quantity - 1,
+        });
       }
     }
   }
@@ -16,13 +26,26 @@ function Card({ styles, item, shoppingCart, setShoppingCart, allProducts }) {
   function handleAddToCart(e) {
     const id = Number(e.target.id);
     const item = allProducts.filter((product) => product.id === id);
-    const items = new Array(quantity).fill(item[0]);
-    setShoppingCart([...shoppingCart, ...items]);
+    const items = new Array(cardInfo.quantity).fill(item[0]);
+    console.log(cardInfo);
+    const quantity = cardInfo.quantity;
+    const price = item[0].price * cardInfo.quantity;
+    const cartTotal = shoppingCart.total;
+    console.log(quantity, cartTotal);
+    const cartItems = shoppingCart.items;
+    setShoppingCart(() => {
+      return { items: [...cartItems, ...items], total: cartTotal + price };
+    });
+    setCardInfo({ item: { ...item }, quantity: 1 });
+    setDisplayAddedNoti(() => true);
   }
 
   return (
     <div className={styles.card} key={item.id}>
-      <img src={item.image} alt={item.title} />
+      <Link to="/product/${item.id}" state={cardInfo}>
+        <img src={item.image} alt={item.title} />
+      </Link>
+
       <div className={styles.cardText}>
         <p>{item.title}</p>
 
@@ -30,7 +53,7 @@ function Card({ styles, item, shoppingCart, setShoppingCart, allProducts }) {
           <p>${item.price}</p>
           <div className={styles.quantity}>
             <p>Quantity:</p>
-            <p>{quantity}</p>
+            <p>{cardInfo.quantity}</p>
             <button onClick={handleQuantityClick}>+</button>
             <button onClick={handleQuantityClick}>-</button>
           </div>
