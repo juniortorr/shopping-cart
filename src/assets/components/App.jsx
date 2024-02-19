@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import styles from '../styles/App.module.scss';
 import Nav from './Nav';
 import Card from './Card';
 import AddedToCart from './Add-cart-alert';
 import { Outlet } from 'react-router-dom';
+import storedData from '../data';
 
 function App() {
   const [apiData, setApiData] = useState(null);
@@ -15,7 +16,7 @@ function App() {
       const response = await fetch('https://fakestoreapi.com/products', { mode: 'cors' });
       const json = await response.json();
       setApiData([...json]);
-      console.log(json);
+      storedData.setData([...json]);
     }
     getData();
   }, []);
@@ -29,6 +30,7 @@ function App() {
           Everything
         </h1>
         {displayAddedNoti === true && <AddedToCart setDisplayAddedNoti={setDisplayAddedNoti} />}
+
         <section className={styles.cardsContainer}>
           {apiData ? (
             apiData.map((item) => {
@@ -47,7 +49,7 @@ function App() {
           ) : (
             <h2>loading...</h2>
           )}
-          <Outlet />
+          <Outlet context={[shoppingCart, setShoppingCart]} />
         </section>
       </main>
     </>

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './assets/components/App.jsx';
 import './index.css';
-import Product from './assets/components/Product.jsx';
+import Product, { loader as productLoader } from './assets/components/Product.jsx';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -13,7 +13,7 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="product/:productId" element={<Product />}></Route>
+      <Route path="product/:productId" element={<Product />} loader={productLoader}></Route>
     </Route>
   )
 );

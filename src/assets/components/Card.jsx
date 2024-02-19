@@ -42,7 +42,7 @@ function Card({ styles, item, shoppingCart, setShoppingCart, allProducts, setDis
 
   return (
     <div className={styles.card} key={item.id}>
-      <Link to="/product/${item.id}" state={cardInfo}>
+      <Link to={'/product/' + item.id} state={{ cart: shoppingCart }}>
         <img src={item.image} alt={item.title} />
       </Link>
 
